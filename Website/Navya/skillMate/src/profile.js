@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import "./App.css";
-import photo from './photo.jpg';
-import { IconHeart } from "icons"
+import photo from "./photo.jpg";
 
 const profiles = [
   { name: "Bhagirath Khusrau", role: "Web Developer", year: "1st year", image: photo },
@@ -10,9 +10,10 @@ const profiles = [
   { name: "Ravi Iyer", role: "Backend Engineer", year: "3rd year", image: photo },
 ];
 
-export default function App() {
+export default function MainSwipe() {
   const [index, setIndex] = useState(0);
   const profile = profiles[index % profiles.length];
+  const navigate = useNavigate();
 
   const swipe = (dir) => {
     setIndex((prev) => {
@@ -59,6 +60,8 @@ export default function App() {
               <h2>{profile.name}</h2>
               <p>{profile.role}</p>
               <p>{profile.year}</p>
+              <button className="view-arrow" onClick={() => navigate(`/profile/${profile.id}`)}>→</button>
+
             </div>
           </motion.div>
         </AnimatePresence>

@@ -1,0 +1,73 @@
+.detail-page {
+  background: #fff;
+  font-family: sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar {
+  background: #fbeaea;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar nav a, .navbar button {
+  margin-left: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 40px;
+  background: #ccc;
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.profile-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 40px;
+}
+
+.about-section,
+.experience-section {
+  background: #bcbcbc;
+  padding: 20px;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.experience-section {
+  max-width: 300px;
+}
+
+.tech-stack {
+  padding: 20px 40px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag {
+  background: #bcbcbc;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
