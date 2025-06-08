@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import photo from "./photo.jpg";
-import "./ProfileDetail.css";
+import "./profile.css";
 
 const profiles = [
   {
