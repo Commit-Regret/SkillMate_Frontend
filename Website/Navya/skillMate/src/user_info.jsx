@@ -47,7 +47,7 @@ export default function UserProfileForm() {
       <Navbar />
 
       {/* Profile Top */}
-      <div className="flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
+      <div className=" min-w-screen flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
         <img
           src={photo}
           alt="Profile"

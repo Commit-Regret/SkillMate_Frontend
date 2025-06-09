@@ -7,7 +7,7 @@ export default function Navbar() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="bg-gradient-to-r from-[#b6c0dc] via-[#dcb6cc] to-[#f7d9e0] p-4 flex items-center justify-between shadow-md">
+    <nav className="sticky top-0 bg-gradient-to-r from-[#b6c0dc] via-[#dcb6cc] to-[#f7d9e0] p-4 flex items-center justify-between shadow-md">
       {/* Brand Name */}
       <div className="text-black font-bold text-xl">SKILL MATE</div>
 

@@ -3,6 +3,7 @@
 .detail-root {
   background: #fff;
   min-height: 100vh;
+  min-width: 100vw;
   font-family: 'Inter', Arial, sans-serif;
 }
 
