@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainSwipe from './profile.jsx';
 import ProfileDetail from './aboutme.jsx';
 import UserProfileForm from './user_info.jsx';
+import ChatPortal from './chat.jsx';
 import './index.css';
 
 const App = () => (
@@ -13,6 +14,7 @@ const App = () => (
       <Route path="/" element={<MainSwipe />} />
       <Route path="/profile/:id" element={<ProfileDetail />} />
       <Route path="/form" element={<UserProfileForm />} />
+      <Route path='/chat' element={<ChatPortal/>}/>
     </Routes>
   </BrowserRouter>
 );

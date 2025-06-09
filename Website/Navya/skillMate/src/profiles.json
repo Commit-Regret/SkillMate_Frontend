@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Rahul Sharma",
+    "title": "AI Engineer",
+    "year": "2nd year",
+    "image": "/yo.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Ananya Verma",
+    "title": "Web Developer",
+    "year": "3rd year",
+    "image": "https://i.imgur.com/pY4ehnR.png"
+  },
+  {
+    "id": 3,
+    "name": "Kunal Joshi",
+    "title": "Data Analyst",
+    "year": "1st year",
+    "image": "https://i.imgur.com/sxPiKvN.png"
+  }
+]
