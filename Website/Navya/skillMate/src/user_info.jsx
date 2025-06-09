@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import photo from "./photo.jpg";
+import { LogOut, User } from 'lucide-react';
 
 export default function UserProfileForm() {
   const [formData, setFormData] = useState({
@@ -44,16 +45,19 @@ export default function UserProfileForm() {
   return (
     <div className="w-screen min-h-screen bg-white font-sans overflow-x-hidden">
       {/* Navbar */}
-      <header className="flex justify-between items-center flex-wrap bg-gradient-to-r from-purple-200 to-pink-200 px-6 py-3">
-        <h1 className="text-black font-extrabold text-xl">SKILL MATE</h1>
-        <nav className="flex items-center gap-3 text-base pr-2">
-          <button className="bg-black text-white rounded-lg px-4 py-1.5 text-sm">YOUR TEAM</button>
-          <div className="flex gap-2">
-            <span className="w-[22px] h-[22px] rounded-full bg-black"></span>
-            <span className="w-[22px] h-[22px] rounded-full bg-black"></span>
-          </div>
-        </nav>
-      </header>
+      <nav className="bg-gradient-to-r from-[#90A8C3] via-[#ADA7C9] to-[#F4CAE0] px-6 py-4 flex justify-between items-center shadow-md">
+         <div className="font-bold text-xl text-black">SKILL MATE</div>
+          <div className="flex items-center gap-4">
+        <button className="bg-black text-white px-4 py-2 rounded-full font-medium">YOUR TEAM</button>
+        <div className="bg-black p-2 rounded-full flex items-center justify-center">
+        <User className="text-white w-5 h-5" />
+        </div>
+      <div className="bg-black p-2 rounded-full flex items-center justify-center">
+          <LogOut className="text-white w-5 h-5" />
+      </div>
+      </div>
+      </nav>
+
 
       {/* Profile Top */}
       <div className="flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
