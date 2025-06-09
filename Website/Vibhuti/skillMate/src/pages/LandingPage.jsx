@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./LandingPage.css"; // Specific CSS for this page
+// import "./LandingPage.css"; // Specific CSS for this page
 function LandingPage() {
   return (
-   <div className="hero-section">
+    <div className="hero-section">
       <header className="navbar">
         <div className="logo">SKILL MATE</div>
         <nav className="nav-links">
@@ -21,7 +21,6 @@ function LandingPage() {
 
       <div className="arc"></div>
     </div>
-    
   );
 }
 
