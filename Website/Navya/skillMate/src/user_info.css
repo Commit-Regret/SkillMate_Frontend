@@ -1,23 +1,33 @@
-.edit-profile-page {
-  font-family: sans-serif;
-  padding: 0;
+
+/* ===== GLOBAL RESET & DEFAULTS ===== */
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: white;
-  min-height: 100vw;
-  
+    
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: sans-serif;
+}
+
+.edit-profile-page {
+  background: white;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(to right, #dcd0ff, #ffd6d6);
-  padding-left: 10px;
-  padding-right: 20px;
-  min-height: 36px;
-  width: 100vw;
-  height: auto;
-  max-height: 72px;
+  padding: 10px 20px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .navbar h1 {
@@ -31,7 +41,6 @@
   align-items: center;
   gap: 10px;
   font-size: 16px;
-  margin-right: 0px;
   padding-right: 10px;
 }
 
@@ -53,14 +62,18 @@
   margin-left: 8px;
 }
 
+/* ===== PROFILE TOP ===== */
 .profile-top {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: 20px;
   gap: 20px;
   border-bottom: 1px solid #aca2a2;
-  color: #000000;
+  color: #000;
   background-color: #c5c5c5;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .profile-pic {
@@ -72,15 +85,21 @@
 
 .upload-btn {
   margin-left: auto;
+  max-width: 100%;
   padding: 6px 14px;
   background: #585858;
+  color: white;
   border: none;
   border-radius: 10px;
+  white-space: nowrap;
 }
 
+/* ===== FORM ===== */
 .edit-form {
   padding: 30px;
-  color: #000000;
+  color: #000;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .form-grid {
@@ -97,14 +116,15 @@
 
 .form-grid input,
 .form-grid select {
-  width: 30%;
+  width: 100%;
   padding: 10px;
   border-radius: 6px;
   border: 1px solid #ccc;
-  color: #fff9f9;
+  color: white;
   background-color: #858484;
 }
 
+/* ===== TECH TAGS ===== */
 .tech-stack-section {
   margin-top: 30px;
 }
@@ -127,7 +147,7 @@
 }
 
 .tag-clicked {
-  background-color: #363636; /* your chosen color */
+  background-color: #363636;
   color: white;
   transition: background-color 0.3s ease;
 }
@@ -136,6 +156,50 @@
   margin-top: 20px;
   padding: 8px 20px;
   background: #585858;
+  color: white;
   border: none;
   border-radius: 10px;
+  display: block;
+}
+
+/* ===== RESPONSIVE MEDIA QUERIES ===== */
+
+/* Tablets: collapse form layout to 1 column */
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-btn {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+/* Mobiles: stack everything, adjust font & spacing */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .navbar nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .edit-form {
+    padding: 20px 15px;
+  }
+
+  .save-btn {
+    width: 100%;
+    text-align: center;
+  }
 }
