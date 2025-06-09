@@ -11,7 +11,6 @@ const sections = [
     bgColor: "#958DB9",
     title: "FIND YOUR MENTOR",
     subtitle: "Swipe to connect with skilled individuals of your preference",
-    isBlackButton: true,
     button: "START SWIPING",
   },
   {
@@ -20,7 +19,6 @@ const sections = [
     title: "FIND YOUR PERFECT TEAM",
     subtitle: "Choose your required tech stack",
     input: true,
-    isBlackButton: true,
     button: "START SWIPING",
   },
   {
