@@ -4,7 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { HiOutlineLogout } from "react-icons/hi";
 import { BsPersonFill } from "react-icons/bs";
 import { GiArtificialHive } from "react-icons/gi";
-
+import { Link } from "react-router-dom";
 const sections = [
   {
     id: "mentor",
@@ -55,9 +55,13 @@ const SkillMateLanding = () => {
       >
         <h1 className="text-lg">SKILL MATE</h1>
         <div className="flex gap-4 items-center">
-          <button className="bg-black text-white px-4 py-2 rounded-full text-sm flex items-center gap-2">
+           <Link to="/teams">
+          <button className="bg-black text-white px-4 py-2 rounded-full text-sm flex items-center gap-2" >
             <FaUsers /> YOUR TEAM
-          </button>
+            </button>
+            </Link>
+            {/* <Link to="/teams">YOUR TEAM</Link> */}
+          
           <div className="bg-black rounded-full p-2">
             <BsPersonFill className="text-white" size={24} />
           </div>
