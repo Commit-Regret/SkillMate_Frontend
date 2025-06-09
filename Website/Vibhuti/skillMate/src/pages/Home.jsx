@@ -47,21 +47,19 @@ const SkillMateLanding = () => {
       {/* <h1 className="bg-red-500">Hello</h1> */}
       {/* Navbar */}
       <div
-        className="w-full p-4 flex justify-between items-center text-black font-semibold"
-        style={{
-          background:
-            "linear-gradient(to right, #90A8C3, #ADA7C9, #D7B9D5, #F4CAE0)",
-        }}
-      >
-        <h1 className="text-lg">SKILL MATE</h1>
+      className=" w-full bg-gradient-to-r from-[#90A8C3] via-[#ADA7C9] via-[#D7B9D5] to-[#F4CAE0] p-6 font-sans"
+    >
+      {/* Top Nav */}
+      <div className="flex justify-between items-center mb-4 px-6 py-3 rounded shadow-lg">
+        <h1 className="font-bold text-lg">SKILL MATE</h1>
         <div className="flex gap-4 items-center">
            <Link to="/teams">
           <button className="bg-black text-white px-4 py-2 rounded-full text-sm flex items-center gap-2" >
             <FaUsers /> YOUR TEAM
-            </button>
+             </button>
             </Link>
             {/* <Link to="/teams">YOUR TEAM</Link> */}
-          
+         
           <div className="bg-black rounded-full p-2">
             <BsPersonFill className="text-white" size={24} />
           </div>
@@ -74,7 +72,7 @@ const SkillMateLanding = () => {
           </div>
         </div>
       </div>
-
+</div>
       {/* Sections */}
       {sections.map((section) => (
         <div

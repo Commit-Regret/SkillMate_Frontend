@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 // import "./LandingPage.css"; // Specific CSS for this page
 function LandingPage() {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-r from-[#90A8C3] via-[#ADA7C9] to-[#F4CAE0] relative overflow-hidden">
-
-      {/* Navbar (smaller height, white, uppercase black links) */}
-      <div className="flex justify-between items-center px-8 py-3 shadow-md z-10 relative">
-        <div className="text-lg font-bold">SKILL MATE</div>
-        <div className="flex gap-6 items-center">
+     <div
+      className="min-h-screen w-full bg-gradient-to-r from-[#90A8C3] via-[#ADA7C9] via-[#D7B9D5] to-[#F4CAE0] p-6 font-sans"
+    >
+      {/* Top Nav */}
+      <div className="flex justify-between items-center mb-4 px-6 py-3 rounded shadow-lg">
+        <h1 className="font-bold text-lg">SKILL MATE</h1>
+        <div className="flex gap-4 items-center">
           <Link to="/home">HOME</Link>
           <a href="#" className="text-sm font-semibold text-black tracking-wide">PROFILE</a>
           <button className="bg-black text-white text-xs px-4 py-1 rounded-full">
