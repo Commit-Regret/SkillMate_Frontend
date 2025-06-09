@@ -102,10 +102,10 @@ const SkillMateLanding = () => {
       ))}
 
       {/* Floating AI Assistant Button */}
-      {/* <button className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm">
+      { <button className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm">
         <GiArtificialHive size={20} /> Ask Spacious AI
         <IoIosArrowDown size={14} />
-      </button> */}
+      </button> }
     </div>
   );
 };
