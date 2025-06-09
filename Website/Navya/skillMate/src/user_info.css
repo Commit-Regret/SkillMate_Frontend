@@ -1,0 +1,141 @@
+.edit-profile-page {
+  font-family: sans-serif;
+  padding: 0;
+  margin: 0;
+  background: white;
+  min-height: 100vw;
+  
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #dcd0ff, #ffd6d6);
+  padding-left: 10px;
+  padding-right: 20px;
+  min-height: 36px;
+  width: 100vw;
+  height: auto;
+  max-height: 72px;
+}
+
+.navbar h1 {
+  font-weight: 800;
+  color: black;
+  font-size: 24px;
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  margin-right: 0px;
+  padding-right: 10px;
+}
+
+.your-team {
+  background: black;
+  color: white;
+  border-radius: 10px;
+  padding: 6px 14px;
+  border: none;
+  font-size: 16px;
+}
+
+.icons .icon-circle {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: black;
+  margin-left: 8px;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  border-bottom: 1px solid #aca2a2;
+  color: #000000;
+  background-color: #c5c5c5;
+}
+
+.profile-pic {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.upload-btn {
+  margin-left: auto;
+  padding: 6px 14px;
+  background: #585858;
+  border: none;
+  border-radius: 10px;
+}
+
+.edit-form {
+  padding: 30px;
+  color: #000000;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-grid input,
+.form-grid select {
+  width: 30%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  color: #fff9f9;
+  background-color: #858484;
+}
+
+.tech-stack-section {
+  margin-top: 30px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tag {
+  background-color: #eee;
+  border-radius: 12px;
+  padding: 5px 12px;
+  margin: 4px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.tag-clicked {
+  background-color: #363636; /* your chosen color */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.save-btn {
+  margin-top: 20px;
+  padding: 8px 20px;
+  background: #585858;
+  border: none;
+  border-radius: 10px;
+}
