@@ -53,7 +53,7 @@ export const profiles = [
   },
   {
     id: 5,
-    name: "Sophia Martinez",
+    name: "Sopia Martinez",
     age: 27,
     image: "https://randomuser.me/api/portraits/women/5.jpg",
     bio: "Environmental scientist and hiker who found her passion in software development. Combining technical skills with environmental awareness to create sustainable tech solutions.",
