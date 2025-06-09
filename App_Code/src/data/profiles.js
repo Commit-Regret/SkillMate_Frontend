@@ -1,0 +1,67 @@
+export const profiles = [
+  {
+    id: 1,
+    name: "Sarah Johnson",
+    age: 28,
+    image: "https://randomuser.me/api/portraits/women/1.jpg",
+    bio: "Adventure seeker and coffee enthusiast. Passionate about exploring new technologies and building innovative solutions. Always eager to learn and grow in the ever-evolving tech landscape.",
+    experience: [
+      "Senior Software Engineer at TechCorp (2020-Present)",
+      "Full Stack Developer at StartupX (2018-2020)",
+      "Junior Developer at WebSolutions (2016-2018)",
+    ],
+    techStack: ["React", "Node.js", "Python", "AWS", "Docker"],
+  },
+  {
+    id: 2,
+    name: "Michael Chen",
+    age: 31,
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
+    bio: "Photographer and travel lover with a strong background in software development. Combining technical expertise with creative vision to build beautiful digital experiences.",
+    experience: [
+      "Lead Developer at CreativeTech (2019-Present)",
+      "Senior Frontend Developer at DesignHub (2017-2019)",
+      "UI/UX Developer at WebCraft (2015-2017)",
+    ],
+    techStack: ["JavaScript", "React", "Vue.js", "TypeScript", "GraphQL"],
+  },
+  {
+    id: 3,
+    name: "Emma Wilson",
+    age: 25,
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
+    bio: "Artist and yoga instructor turned software developer. Bringing creativity and mindfulness to the world of technology. Passionate about building intuitive and accessible applications.",
+    experience: [
+      "Full Stack Developer at WellnessTech (2021-Present)",
+      "Frontend Developer at ArtSpace (2019-2021)",
+      "Junior Developer at CreativeCode (2018-2019)",
+    ],
+    techStack: ["React Native", "Node.js", "MongoDB", "Express", "Redux"],
+  },
+  {
+    id: 4,
+    name: "David Kim",
+    age: 29,
+    image: "https://randomuser.me/api/portraits/men/4.jpg",
+    bio: "Tech entrepreneur and foodie with a passion for building scalable applications. Experienced in both startup and enterprise environments, always looking for the next big challenge.",
+    experience: [
+      "CTO at FoodTech Startup (2020-Present)",
+      "Senior Backend Developer at EnterpriseX (2018-2020)",
+      "Full Stack Developer at TechStart (2016-2018)",
+    ],
+    techStack: ["Python", "Django", "PostgreSQL", "Kubernetes", "AWS"],
+  },
+  {
+    id: 5,
+    name: "Sopia Martinez",
+    age: 27,
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
+    bio: "Environmental scientist and hiker who found her passion in software development. Combining technical skills with environmental awareness to create sustainable tech solutions.",
+    experience: [
+      "Senior Developer at GreenTech (2021-Present)",
+      "Full Stack Developer at EcoSolutions (2019-2021)",
+      "Junior Developer at TechForGood (2018-2019)",
+    ],
+    techStack: ["MERN Stack", "Python", "TensorFlow", "Docker", "Azure"],
+  },
+];
