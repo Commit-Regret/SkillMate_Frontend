@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import './profile.css';
 import photo from "./photo.jpg";
+import photo1 from "./photo1.jpg";
+import photo2 from "./photo2.jpg";
 
 const profiles = [
   {
@@ -15,13 +17,13 @@ const profiles = [
     name: 'Rahul Sharma',
     role: 'AI Engineer',
     year: '2nd year',
-    image: photo,
+    image: photo1,
   },
   {
     name: 'Sneha Verma',
     role: 'Designer',
     year: '3rd year',
-    image: photo,
+    image: photo2,
   },
 ];
 
