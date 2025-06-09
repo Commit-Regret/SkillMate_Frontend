@@ -1,6 +1,6 @@
 
 /* ===== GLOBAL RESET & DEFAULTS ===== */
-* {
+/** {
   box-sizing: border-box;
   margin: 0;
     
@@ -17,9 +17,9 @@ html, body {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-}
+}*/
 
-/* ===== NAVBAR ===== */
+/* ===== NAVBAR ===== 
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -60,9 +60,9 @@ html, body {
   border-radius: 50%;
   background: black;
   margin-left: 8px;
-}
+}*/
 
-/* ===== PROFILE TOP ===== */
+/* ===== PROFILE TOP ===== 
 .profile-top {
   display: flex;
   flex-wrap: wrap;
@@ -93,8 +93,8 @@ html, body {
   border-radius: 10px;
   white-space: nowrap;
 }
-
-/* ===== FORM ===== */
+*/
+/* ===== FORM ===== 
 .edit-form {
   padding: 30px;
   color: #000;
@@ -122,9 +122,9 @@ html, body {
   border: 1px solid #ccc;
   color: white;
   background-color: #858484;
-}
+}*/
 
-/* ===== TECH TAGS ===== */
+/* ===== TECH TAGS ===== 
 .tech-stack-section {
   margin-top: 30px;
 }
@@ -160,11 +160,11 @@ html, body {
   border: none;
   border-radius: 10px;
   display: block;
-}
+}*/
 
 /* ===== RESPONSIVE MEDIA QUERIES ===== */
 
-/* Tablets: collapse form layout to 1 column */
+/* Tablets: collapse form layout to 1 column 
 @media (max-width: 1024px) {
   .form-grid {
     grid-template-columns: 1fr;
@@ -176,7 +176,7 @@ html, body {
   }
 }
 
-/* Mobiles: stack everything, adjust font & spacing */
+/* Mobiles: stack everything, adjust font & spacing
 @media (max-width: 600px) {
   .navbar {
     flex-direction: column;
@@ -202,4 +202,4 @@ html, body {
     width: 100%;
     text-align: center;
   }
-}
+} */

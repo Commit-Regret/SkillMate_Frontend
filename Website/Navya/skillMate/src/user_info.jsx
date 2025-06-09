@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import photo from "./photo.jpg";
-import { LogOut, User } from 'lucide-react';
+import React, { useState } from "react";
+import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or adjust path
+import Navbar from "./navbar.jsx";
 
 export default function UserProfileForm() {
   const [formData, setFormData] = useState({
@@ -16,6 +16,7 @@ export default function UserProfileForm() {
     city: "Right Atrium",
     techStack: Array(10).fill("Python"),
   });
+
   const [clickedTags, setClickedTags] = useState(
     Array(formData.techStack.length).fill(false)
   );
@@ -35,7 +36,6 @@ export default function UserProfileForm() {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
-    // You can process or upload the file here
   };
 
   const handleUploadClick = () => {
@@ -43,27 +43,18 @@ export default function UserProfileForm() {
   };
 
   return (
-    <div className="w-screen min-h-screen bg-white font-sans overflow-x-hidden">
-      {/* Navbar */}
-      <nav className="bg-gradient-to-r from-[#90A8C3] via-[#ADA7C9] to-[#F4CAE0] px-6 py-4 flex justify-between items-center shadow-md">
-         <div className="font-bold text-xl text-black">SKILL MATE</div>
-          <div className="flex items-center gap-4">
-        <button className="bg-black text-white px-4 py-2 rounded-full font-medium">YOUR TEAM</button>
-        <div className="bg-black p-2 rounded-full flex items-center justify-center">
-        <User className="text-white w-5 h-5" />
-        </div>
-      <div className="bg-black p-2 rounded-full flex items-center justify-center">
-          <LogOut className="text-white w-5 h-5" />
-      </div>
-      </div>
-      </nav>
-
+    <>
+      <Navbar />
 
       {/* Profile Top */}
       <div className="flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
-        <img src={photo} alt="Profile" className="w-[90px] h-[90px] rounded-full object-cover" />
+        <img
+          src={photo}
+          alt="Profile"
+          className="w-[90px] h-[90px] rounded-full object-cover"
+        />
         <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
-        {/* Tailwind-styled Upload Resume */}
+
         <div className="ml-auto flex flex-col items-start gap-3">
           <button
             type="button"
@@ -81,14 +72,15 @@ export default function UserProfileForm() {
           />
           {selectedFile && (
             <p className="text-sm text-gray-700 mt-1">
-              Selected file: <span className="font-semibold">{selectedFile.name}</span>
+              Selected file:{" "}
+              <span className="font-semibold">{selectedFile.name}</span>
             </p>
           )}
         </div>
       </div>
 
       {/* Form */}
-      <form className="px-8 py-6 text-black">
+      <form className="px-8 py-6 text-black bg-white">
         <div className="grid grid-cols-2 gap-6 max-[1024px]:grid-cols-1">
           {[
             ["First Name", "firstName"],
@@ -136,7 +128,9 @@ export default function UserProfileForm() {
                 key={index}
                 onClick={() => handleTagClick(index)}
                 className={`cursor-pointer px-4 py-1.5 rounded-full transition-colors duration-300 select-none ${
-                  clickedTags[index] ? "bg-gray-800 text-white" : "bg-gray-200 text-black"
+                  clickedTags[index]
+                    ? "bg-gray-800 text-white"
+                    : "bg-gray-200 text-black"
                 }`}
               >
                 {tech}
@@ -145,10 +139,14 @@ export default function UserProfileForm() {
           </div>
         </div>
 
-        <button type="submit" className="mt-6 px-6 py-2 bg-gray-700 text-white rounded-lg">
-          save
+        <button
+          type="submit"
+          className="mt-6 px-6 py-2 bg-gray-700 text-white rounded-lg"
+        >
+          Save
         </button>
       </form>
-    </div>
+    </>
   );
 }
+
