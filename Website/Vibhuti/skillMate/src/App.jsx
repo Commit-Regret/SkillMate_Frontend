@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import TeamsPage from './pages/TeamsPage';
 import ChatBox from './pages/ChatBox';
 import Flowchart from './pages/Flowchart';
-
+import YouAreAMatch from './pages/YouAreAMatch';
 function App() {
   return (
     <Router>
@@ -15,6 +15,7 @@ function App() {
         <Route path="/teams" element={<TeamsPage />} />
         <Route path="/chat" element={<ChatBox />} />
         <Route path="/flowchart" element={<Flowchart />} />
+        <Route path="/match" element={<YouAreAMatch />} />
       </Routes>
     </Router>
   );
