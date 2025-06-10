@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
 import photo1 from "./photo1.jpg";
 import photo2 from "./photo.jpg";
-
+import { Link } from "react-router-dom";
 const MatchScreen = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -82,10 +82,11 @@ const MatchScreen = () => {
             />
           </div>
         </div>
-
+        <Link to="/messages">
         <button className="bg-black text-white text-xl px-6 py-3 rounded-full font-semibold">
           Chat to discuss further
         </button>
+        </Link>
       </div>
 
       {/* Chat icon top right (optional) */}
