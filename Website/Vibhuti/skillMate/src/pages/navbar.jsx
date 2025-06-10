@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaBars, FaTimes, FaBell } from "react-icons/fa";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -7,7 +7,7 @@ export default function Navbar() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <nav className="sticky top-0 bg-gradient-to-r from-[#b6c0dc] via-[#dcb6cc] to-[#f7d9e0] p-4 flex items-center justify-between shadow-md">
+    <nav className="sticky top-0 bg-gradient-to-r from-[#b6c0dc] via-[#dcb6cc] to-[#f7d9e0] p-4 flex items-center justify-between shadow-md z-50">
       {/* Brand Name */}
       <div className="text-black font-bold text-xl">SKILL MATE</div>
 
@@ -15,6 +15,11 @@ export default function Navbar() {
       <div className="hidden sm:flex items-center gap-4">
         <button className="bg-black text-white px-4 py-1 rounded-full text-sm" onClick={() => navigate("/team")}>
           YOUR TEAM
+        </button>
+        <button className="bg-black text-white p-2 rounded-full relative">
+          <FaBell size={16} />
+          {/* Optional red dot */}
+          <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
         </button>
         <button className="bg-black text-white p-2 rounded-full">
           <FaUser size={16} />
@@ -35,10 +40,15 @@ export default function Navbar() {
       {menuOpen && (
         <div className="absolute top-16 right-4 bg-white border border-gray-300 rounded-lg shadow-md w-40 z-50 sm:hidden">
           <ul className="flex flex-col p-2 text-sm">
-            <li><link to >
+            <li>
               <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">
                 YOUR TEAM
-              </button></link>
+              </button>
+            </li>
+            <li>
+              <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
+                <FaBell /> Notifications
+              </button>
             </li>
             <li>
               <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
