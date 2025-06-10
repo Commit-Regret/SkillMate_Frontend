@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
 import TeamsPage from './pages/TeamsPage';
 import ChatBox from './pages/ChatBox';
-//import Login from "./pages/Login"; 
+import Flowchart from './pages/Flowchart';
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/teams" element={<TeamsPage />} />
         <Route path="/chat" element={<ChatBox />} />
+        <Route path="/flowchart" element={<Flowchart />} />
       </Routes>
     </Router>
   );

@@ -5,6 +5,8 @@ import { HiOutlineLogout } from "react-icons/hi";
 import { BsPersonFill } from "react-icons/bs";
 import { GiArtificialHive } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Add this line at the top
+
 const sections = [
   {
     id: "mentor",
@@ -42,6 +44,8 @@ const sections = [
 ];
 
 const SkillMateLanding = () => {
+  const navigate = useNavigate(); // Inside the component
+
   return (
     <div className="font-sans">
       {/* <h1 className="bg-red-500">Hello</h1> */}
@@ -92,6 +96,11 @@ const SkillMateLanding = () => {
           )}
 
           <button
+           onClick={() => {
+    if (section.id === "roadmap") {
+      navigate("/flowchart");
+    }
+  }}
             className={`${
               section.isBlackButton
                 ? "bg-black text-white"
