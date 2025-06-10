@@ -3,6 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import Login from "./src/screens/Login";
+import Messaging from "./src/screens/Messaging";
+import Chat from "./src/screens/Chat";
+
 import HomeScreen from "./src/screens/HomeScreen";
 import SwipeScreen from "./src/screens/SwipeScreen";
 
@@ -33,6 +37,21 @@ export default function App() {
             name="Swipe"
             component={SwipeScreen}
             options={{ title: "Find Matches" }}
+          />
+          <Stack.Screen
+            name="Messaging"
+            component={Messaging}
+            options={{ title: "Messaging" }}
+          />
+          <Stack.Screen
+            name="Chat"
+            component={Chat}
+            options={{ title: "Chats", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ title: "Login", headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>

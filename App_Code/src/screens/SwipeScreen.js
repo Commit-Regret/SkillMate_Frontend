@@ -8,29 +8,74 @@ import {
   TouchableOpacity,
   ScrollView,
   Animated,
+  PanResponder,
 } from "react-native";
-import Swiper from "react-native-deck-swiper";
 import { profiles } from "../data/profiles";
 import ProfileDetails from "../components/ProfileDetails";
 
 const { width, height } = Dimensions.get("window");
+const SWIPE_THRESHOLD = 120;
 
 const SwipeScreen = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [likedProfiles, setLikedProfiles] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const swiperRef = useRef(null);
   const scrollViewRef = useRef(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const buttonScale = useRef(new Animated.Value(1)).current;
+  const position = useRef(new Animated.ValueXY()).current;
+  const rotation = position.x.interpolate({
+    inputRange: [-width / 2, 0, width / 2],
+    outputRange: ["-10deg", "0deg", "10deg"],
+    extrapolate: "clamp",
+  });
 
-  const handleSwipeLeft = (cardIndex) => {
-    const profile = profiles[cardIndex];
-    setLikedProfiles([...likedProfiles, profile]);
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (_, gesture) => {
+        position.setValue({ x: gesture.dx, y: gesture.dy });
+      },
+      onPanResponderRelease: (_, gesture) => {
+        if (gesture.dx > SWIPE_THRESHOLD) {
+          swipeRight();
+        } else if (gesture.dx < -SWIPE_THRESHOLD) {
+          swipeLeft();
+        } else {
+          resetPosition();
+        }
+      },
+    })
+  ).current;
+
+  const swipeRight = () => {
+    Animated.timing(position, {
+      toValue: { x: width + 100, y: gesture.dy },
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      setCurrentIndex(currentIndex + 1);
+      position.setValue({ x: 0, y: 0 });
+    });
   };
 
-  const handleSwipeRight = (cardIndex) => {
-    console.log("Profile removed:", profiles[cardIndex].name);
+  const swipeLeft = () => {
+    Animated.timing(position, {
+      toValue: { x: -width - 100, y: gesture.dy },
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      setCurrentIndex(currentIndex + 1);
+      position.setValue({ x: 0, y: 0 });
+    });
+  };
+
+  const resetPosition = () => {
+    Animated.spring(position, {
+      toValue: { x: 0, y: 0 },
+      useNativeDriver: false,
+    }).start();
   };
 
   const animateButtonPress = () => {
@@ -50,7 +95,7 @@ const SwipeScreen = () => {
 
   const handleScrollToDetails = () => {
     animateButtonPress();
-    setSelectedProfile(profiles[swiperRef.current.state.firstCardIndex]);
+    setSelectedProfile(profiles[currentIndex]);
     setShowDetails(true);
 
     Animated.timing(fadeAnim, {
@@ -78,9 +123,29 @@ const SwipeScreen = () => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
   };
 
-  const renderCard = (card) => {
+  const renderCard = () => {
+    if (currentIndex >= profiles.length) {
+      return (
+        <View style={styles.card}>
+          <Text style={styles.noMoreCards}>No more profiles!</Text>
+        </View>
+      );
+    }
+
+    const card = profiles[currentIndex];
+    const cardStyle = {
+      transform: [
+        { translateX: position.x },
+        { translateY: position.y },
+        { rotate: rotation },
+      ],
+    };
+
     return (
-      <View style={styles.card}>
+      <Animated.View
+        style={[styles.card, cardStyle]}
+        {...panResponder.panHandlers}
+      >
         <Image source={{ uri: card.image }} style={styles.image} />
         <View style={styles.cardContent}>
           <View style={styles.cardInfo}>
@@ -99,7 +164,7 @@ const SwipeScreen = () => {
             </TouchableOpacity>
           </Animated.View>
         </View>
-      </View>
+      </Animated.View>
     );
   };
 
@@ -113,22 +178,7 @@ const SwipeScreen = () => {
         showsVerticalScrollIndicator={false}
         bounces={false}
       >
-        <View style={styles.swiperContainer}>
-          <Swiper
-            ref={swiperRef}
-            cards={profiles}
-            renderCard={renderCard}
-            onSwipedLeft={handleSwipeLeft}
-            onSwipedRight={handleSwipeRight}
-            cardIndex={0}
-            backgroundColor={"#f5f5f5"}
-            stackSize={3}
-            stackSeparation={15}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-            swipeBackCard
-          />
-        </View>
+        <View style={styles.swiperContainer}>{renderCard()}</View>
 
         {showDetails && selectedProfile && (
           <Animated.View
@@ -159,6 +209,8 @@ const styles = StyleSheet.create({
   swiperContainer: {
     height: height,
     position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     width: width * 0.9,
@@ -229,6 +281,11 @@ const styles = StyleSheet.create({
   },
   detailsContent: {
     flex: 1,
+  },
+  noMoreCards: {
+    fontSize: 24,
+    textAlign: "center",
+    color: "#666",
   },
 });
 
