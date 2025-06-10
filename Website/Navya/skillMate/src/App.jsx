@@ -10,6 +10,8 @@ import FlowchartPage from './aichatbox.jsx';
 import LandingPage from './LandingPage.jsx';
 import Home from './Home.jsx';
 import TeamsPage from './TeamsPage.jsx';
+import ChatBox from './AiChat.jsx' ;
+
 
 import './index.css';
 
@@ -25,7 +27,8 @@ const App = () => (
       <Route path='/' element={<LandingPage/>}/>
       <Route path='/home' element={<Home/>}/>
       <Route path='/team' element={<TeamsPage/>}/>
-      
+      <Route path='/AIchat' element={<ChatBox/>}/>
+      <Route path="/team/:name" element={<ProfileDetail/>} />
     </Routes>
   </BrowserRouter>
 );

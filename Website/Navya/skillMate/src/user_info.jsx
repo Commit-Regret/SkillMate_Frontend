@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or adjust path
 import Navbar from "./navbar.jsx";
 import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function UserProfileForm() {
   const [formData, setFormData] = useState({

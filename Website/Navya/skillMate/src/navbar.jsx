@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import {Link} from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,15 +14,15 @@ export default function Navbar() {
 
       {/* Desktop Icons */}
       <div className="hidden sm:flex items-center gap-4">
-        <button className="bg-black text-white px-4 py-1 rounded-full text-sm" onClick={() => navigate("/team")}>
+        <Link to='/team'><button className="bg-black text-white px-4 py-1 rounded-full text-sm" onClick={() => navigate("/team")}>
           YOUR TEAM
-        </button>
-        <button className="bg-black text-white p-2 rounded-full">
+        </button></Link>
+        <Link to='/form'><button className="bg-black text-white p-2 rounded-full">
           <FaUser size={16} />
-        </button>
-        <button className="bg-black text-white p-2 rounded-full">
+        </button></Link>
+        <Link to='/'><button className="bg-black text-white p-2 rounded-full">
           <FaSignOutAlt size={16} />
-        </button>
+        </button></Link>
       </div>
 
       {/* Mobile Menu Button */}
@@ -35,15 +36,16 @@ export default function Navbar() {
       {menuOpen && (
         <div className="absolute top-16 right-4 bg-white border border-gray-300 rounded-lg shadow-md w-40 z-50 sm:hidden">
           <ul className="flex flex-col p-2 text-sm">
-            <li><link to >
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">
+            <li>
+              <Link to='/team'>
+              <button className="w-full text-whit text-left-white px-4 py-2 hover:bg-gray-100 rounded">
                 YOUR TEAM
-              </button></link>
+              </button></Link>
             </li>
             <li>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
+             <Link><button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
                 <FaUser /> Profile
-              </button>
+              </button></Link>
             </li>
             <li>
               <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
