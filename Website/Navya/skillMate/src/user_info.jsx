@@ -4,7 +4,6 @@ import Navbar from "./navbar.jsx";
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-
 export default function UserProfileForm() {
   const [formData, setFormData] = useState({
     firstName: "Rahul",

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { GiArtificialHive } from "react-icons/gi";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function SpaciousChatBox({ isOpen, toggleOpen }) {
   const [messages, setMessages] = useState([
@@ -9,11 +11,9 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
   const handleSend = () => {
     if (input.trim() === "") return;
 
-    // Add user message
     setMessages((prev) => [...prev, { text: input, from: "user" }]);
     setInput("");
 
-    // Simulate bot reply after 1s
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
@@ -28,17 +28,18 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* ✅ Floating Button */}
       {!isOpen && (
         <button
           onClick={toggleOpen}
-          className="fixed bottom-6 right-6 bg-pink-500 text-black rounded-full w-14 h-14 shadow-xl z-50 hover:bg-pink-600 transition-all flex items-center justify-center text-2xl"
+          className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm z-50"
         >
-          💬
+          <GiArtificialHive size={20} /> Ask Spacious AI
+          <IoIosArrowDown size={14} />
         </button>
       )}
 
-      {/* Chat Box */}
+      {/* ✅ Chat Box */}
       {isOpen && (
         <div className="fixed bottom-6 right-6 bg-pink-100/90 backdrop-blur-lg rounded-2xl shadow-2xl w-[420px] h-[500px] flex flex-col z-50 border border-white text-black/30">
           {/* Header */}
@@ -46,14 +47,14 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
             <h2 className="text-xl font-bold text-gray-800">Chat with SPACIOUS AI</h2>
             <button
               onClick={toggleOpen}
-              className="text-white-500 hover:text-white-800 text-xl bg-white "
+              className="text-black-800 text-white text-xl bg-white px-3 py-1 rounded"
               title="Close Chat"
             >
               X
             </button>
           </div>
 
-          {/* Chat Messages */}
+          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.map((msg, index) => (
               <div
@@ -75,7 +76,7 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-300"
+              className="flex-1 rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-300 text-black"
               placeholder="Type a message"
             />
             <button
