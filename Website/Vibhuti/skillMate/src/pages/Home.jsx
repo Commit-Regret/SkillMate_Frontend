@@ -101,6 +101,7 @@ const SkillMateLanding = () => {
       navigate("/flowchart");
     }
   }}
+  
             className={`${
               section.isBlackButton
                 ? "bg-black text-white"

@@ -140,7 +140,7 @@ export default function UserProfileForm() {
             ))}
           </div>
         </div>
-        <Link to="/home">
+        <Link to="/Home">
         <button
           type="submit"
           className="mt-6 px-6 py-2 bg-gray-700 text-white rounded-lg"
