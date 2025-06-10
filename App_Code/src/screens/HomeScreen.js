@@ -16,7 +16,8 @@ const HomeScreen = ({ navigation }) => {
   const [techStack, setTechStack] = useState("");
 
   const handleMentorSwipe = () => {
-    navigation.navigate("Swipe");
+    // navigation.navigate("Swipe");
+    navigation.navigate("Chat");
   };
 
   const handleTeamSwipe = () => {

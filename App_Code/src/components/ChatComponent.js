@@ -12,7 +12,6 @@ const ChatComponent = ({ item, onlineUsers, currentUser }) => {
   useLayoutEffect(() => {
     setMessages(item.messages[item.messages.length - 1]);
 
-    // Check if any users in the room are online
     const checkOnlineStatus = () => {
       if (onlineUsers && item.users) {
         const onlineInRoom = item.users.some((userId) =>

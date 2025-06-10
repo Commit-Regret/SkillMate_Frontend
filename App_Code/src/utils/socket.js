@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
 
-// Use localhost for development
 const SOCKET_URL = "http://172.20.10.4:4000";
 
 const socket = io(SOCKET_URL, {
