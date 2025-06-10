@@ -13,7 +13,7 @@ export default function Navbar() {
 
       {/* Desktop Icons */}
       <div className="hidden sm:flex items-center gap-4">
-        <button className="bg-black text-white px-4 py-1 rounded-full text-sm">
+        <button className="bg-black text-white px-4 py-1 rounded-full text-sm" onClick={() => navigate("/team")}>
           YOUR TEAM
         </button>
         <button className="bg-black text-white p-2 rounded-full">
@@ -35,10 +35,10 @@ export default function Navbar() {
       {menuOpen && (
         <div className="absolute top-16 right-4 bg-white border border-gray-300 rounded-lg shadow-md w-40 z-50 sm:hidden">
           <ul className="flex flex-col p-2 text-sm">
-            <li>
+            <li><link to >
               <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded">
                 YOUR TEAM
-              </button>
+              </button></link>
             </li>
             <li>
               <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
