@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or adjust path
 import Navbar from "./navbar.jsx";
 import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 export default function UserProfileForm() {
   const [formData, setFormData] = useState({
@@ -139,7 +141,7 @@ export default function UserProfileForm() {
             ))}
           </div>
         </div>
-        <Link to="/home">
+        <Link to="/Home">
         <button
           type="submit"
           className="mt-6 px-6 py-2 bg-gray-700 text-white rounded-lg"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "./navbar";
-import Card from "./Card";
+import Card from "./card";
 import profileData from "./profiles.json";
 
 
