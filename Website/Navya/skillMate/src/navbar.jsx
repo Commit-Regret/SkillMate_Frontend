@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaBars, FaTimes, FaHome,FaBell, FaChartLine, FaFacebookMessenger } from "react-icons/fa";
 import {Link} from "react-router-dom";
 
 export default function Navbar() {
@@ -13,16 +13,27 @@ export default function Navbar() {
       <div className="text-black font-bold text-xl">SKILL MATE</div>
 
       {/* Desktop Icons */}
-      <div className="hidden sm:flex items-center gap-4">
-        <Link to='/team'><button className="bg-black text-white px-4 py-1 rounded-full text-sm" onClick={() => navigate("/team")}>
+      <div className="hidden sm:flex items-center gap-3">
+        <Link to='/team'><button className="bg-black text-white px-2 py-1 rounded-full text-sm" >
           YOUR TEAM
         </button></Link>
-        <Link to='/form'><button className="bg-black text-white p-2 rounded-full">
-          <FaUser size={16} />
+        <Link to='/home'><button className="bg-black text-white p-2 rounded-full">
+          <FaHome size={12} />
         </button></Link>
-        <Link to='/'><button className="bg-black text-white p-2 rounded-full">
-          <FaSignOutAlt size={16} />
+        <Link to='/notify'><button className="bg-black text-white p-2 rounded-full relative">
+        <FaBell size={12} />
+          {/* Optional red dot */}
+                  <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
         </button></Link>
+        <Link to='/chat'><button className="bg-black text-white p-2 rounded-full relative">
+        <FaFacebookMessenger size={12} />
+          
+          <span className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></span>
+        </button></Link>
+       <Link to='/form'><button className="bg-black text-white p-2 rounded-full">
+          <FaUser size={12} />
+        </button></Link>
+        
       </div>
 
       {/* Mobile Menu Button */}
@@ -39,19 +50,27 @@ export default function Navbar() {
             <li>
               <Link to='/team'>
               <button className="w-full text-whit text-left-white px-4 py-2 hover:bg-gray-100 rounded">
-                YOUR TEAM
+                Your Team
               </button></Link>
             </li>
             <li>
-             <Link><button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
+              <Link to='/home'>
+              <button className="w-full text-whit text-left-white px-4 py-2 hover:bg-gray-100 rounded">
+                Home
+              </button></Link>
+            </li>
+            <li>
+              <Link to='/chat'>
+              <button className="w-full text-whit text-left-white px-4 py-2 hover:bg-gray-100 rounded">
+                chat
+              </button></Link>
+            </li>
+            <li>
+             <Link to='/form'><button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
                 <FaUser /> Profile
               </button></Link>
             </li>
-            <li>
-              <button className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded flex items-center gap-2">
-                <FaSignOutAlt /> Logout
-              </button>
-            </li>
+           
           </ul>
         </div>
       )}

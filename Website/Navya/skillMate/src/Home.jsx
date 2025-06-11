@@ -52,16 +52,20 @@ const sections = [
 
   const SkillMateLanding = () => {
   const navigate = useNavigate();
-  const [selectedTags, setSelectedTags] = useState([]);
+ const [selectedTags, setSelectedTags] = useState(
+  Array(techTags.length).fill(false)
+);
+
   const [isChatOpen, setIsChatOpen] = useState(false); // for Spacious AI Chat
 
-  const toggleTag = (tag) => {
-    setSelectedTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag]
-    );
-  };
+  const toggleTag = (index) => {
+  setSelectedTags((prev) => {
+    const newSelected = [...prev];
+    newSelected[index] = !newSelected[index];
+    return newSelected;
+  });
+};
+
 
   const toggleChat = () => setIsChatOpen(!isChatOpen);
   
@@ -82,29 +86,36 @@ const sections = [
 
           {section.isTeamSection && (
             <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {techTags.map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => toggleTag(tag)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition duration-200 
-                    ${
-                      selectedTags.includes(tag)
-                        ? "bg-black text-white"
-                        : "bg-white text-white border border-gray-400"
-                    }`}
-                >
-                  {tag}
-                </button>
-              ))}
+                
+              {techTags.map((tag, index) => (
+  <span
+    key={index}
+    onClick={() => toggleTag(index)}
+    className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-200 select-none ${
+      selectedTags[index]
+        ? "bg-gray-800 text-white border-black"
+        : "bg-gray-200 text-black border-gray-400"
+    }`}
+  >
+    {tag}
+  </span>
+))}
+
+
             </div>
           )}
 
           <button
-            onClick={() => navigate(section.route)}
-            className="px-6 py-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 shadow-md hover:opacity-90 transition duration-200"
-          >
-            {section.buttonIcon && section.buttonIcon} {section.button}
-          </button>
+  onClick={() =>
+    section.id === "inspiration"
+      ? toggleChat()
+      : navigate(section.route)
+  }
+  className="px-6 py-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 shadow-md hover:opacity-90 transition duration-200"
+>
+  {section.buttonIcon && section.buttonIcon} {section.button}
+</button>
+
         </div>
       ))}
 
@@ -113,7 +124,7 @@ const sections = [
           onClick={toggleChat}
           className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 text-sm z-50"
         >
-          
+          \
         </button>
       )}
 

@@ -70,7 +70,7 @@ export default function UserProfileForm() {
             id="fileInput"
             style={{ display: "none" }}
             onChange={handleFileChange}
-            accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            accept="application/pdf"
           />
           {selectedFile && (
             <p className="text-sm text-gray-700 mt-1">
@@ -140,17 +140,27 @@ export default function UserProfileForm() {
             ))}
           </div>
         </div>
-        <Link to="/Home">
-        <button
-          type="submit"
-          className="mt-6 px-6 py-2 bg-gray-700 text-white rounded-lg"
-          
-        >
-          Save
-        </button>
-        </Link>
+        <div className="mt-6 flex justify-between items-center">
+  <Link to="/Home">
+    <button
+      type="submit"
+      className="px-6 py-2 bg-gray-700 text-white rounded-lg"
+    >
+      Save
+    </button>
+  </Link>
+  <Link to="/">
+    <button
+      className="px-6 py-2 bg-gray-700 text-white rounded-lg"
+    >
+      Log Out
+    </button>
+  </Link>
+</div>
+
         
       </form>
+  
     </>
   );
 }

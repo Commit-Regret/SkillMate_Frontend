@@ -1,7 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { auth, googleProvider, signInWithPopup } from "./firebase";
 
 function LoginBox({ onClose, onSignUp }) {
+  // Google Sign-In handler
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      // Redirect or close modal as needed
+      window.location.href = "/home"; // or use navigate if using React Router
+    } catch (error) {
+      alert("Google sign-in failed: " + error.message);
+    }
+  };
+
+  // Apple Sign-In handler (placeholder)
+  const handleAppleSignIn = () => {
+    // Apple Sign-In for web requires a backend and Apple Developer setup.
+    // You would typically redirect to your backend's Apple auth endpoint.
+    window.location.href = "https://appleid.apple.com/auth/authorize?..."; // Replace with your Apple OAuth URL
+  };
+
   return (
     <div
       style={{
@@ -99,6 +118,7 @@ function LoginBox({ onClose, onSignUp }) {
         </div>
         <button
           type="button"
+          onClick={handleAppleSignIn}
           style={{
             width: "100%",
             padding: "10px",
@@ -115,6 +135,7 @@ function LoginBox({ onClose, onSignUp }) {
         </button>
         <button
           type="button"
+          onClick={handleGoogleSignIn}
           style={{
             width: "100%",
             padding: "10px",
