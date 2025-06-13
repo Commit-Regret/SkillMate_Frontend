@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,16 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Connect socket when component mounts
+    socket.connect();
+
+    return () => {
+      // Disconnect socket when component unmounts
+      socket.disconnect();
+    };
+  }, []);
+
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Please fill in all fields");
@@ -24,19 +34,35 @@ const Login = ({ navigation }) => {
 
     setLoading(true);
     try {
+      // Emit login event
       socket.emit("login", { email, password });
 
+      // Listen for login response
       socket.once("loginResponse", async (response) => {
+        console.log("Login response:", response);
         if (response.success) {
+          // Store user data
           await AsyncStorage.setItem("user", JSON.stringify(response.user));
           await AsyncStorage.setItem("username", response.user.username);
 
-          navigation.replace("Chat");
+          // Join personal room
+          socket.emit("joinPersonalRoom", response.user.id);
+
+          // Navigate to Chat screen
+          navigation.replace("Swipe");
         } else {
           Alert.alert("Error", response.message || "Login failed");
         }
         setLoading(false);
       });
+
+      // Set timeout for login response
+      setTimeout(() => {
+        if (loading) {
+          setLoading(false);
+          Alert.alert("Error", "Login request timed out. Please try again.");
+        }
+      }, 10000); // 10 second timeout
     } catch (error) {
       console.error("Login error:", error);
       Alert.alert("Error", "An error occurred during login");
@@ -53,17 +79,24 @@ const Login = ({ navigation }) => {
           style={styles.input}
           placeholder="Email"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
           autoCapitalize="none"
+          autoCorrect={false}
+          editable={true}
+          placeholderTextColor="#666"
         />
 
         <TextInput
           style={styles.input}
           placeholder="Password"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={(text) => setPassword(text)}
           secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+          editable={true}
+          placeholderTextColor="#666"
         />
       </View>
 
