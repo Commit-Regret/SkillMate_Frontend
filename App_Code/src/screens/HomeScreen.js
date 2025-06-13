@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleMentorSwipe = () => {
     // navigation.navigate("Swipe");
-    navigation.navigate("Chat");
+    navigation.navigate("Swipe");
   };
 
   const handleTeamSwipe = () => {

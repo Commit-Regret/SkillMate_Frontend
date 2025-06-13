@@ -12,11 +12,13 @@ import {
 } from "react-native";
 import { profiles } from "../data/profiles";
 import ProfileDetails from "../components/ProfileDetails";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 const SWIPE_THRESHOLD = 120;
 
 const SwipeScreen = () => {
+  const navigation = useNavigation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedProfiles, setLikedProfiles] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
@@ -123,6 +125,15 @@ const SwipeScreen = () => {
     scrollViewRef.current?.scrollTo({ y: 0, animated: true });
   };
 
+  const handleStartChat = () => {
+    if (selectedProfile) {
+      navigation.navigate("Messaging", {
+        name: selectedProfile.name,
+        otherUserId: selectedProfile.id,
+      });
+    }
+  };
+
   const renderCard = () => {
     if (currentIndex >= profiles.length) {
       return (
@@ -186,10 +197,16 @@ const SwipeScreen = () => {
             pointerEvents="box-none"
           >
             <View style={styles.detailsContent}>
-              <ProfileDetails
+              {/* <ProfileDetails
                 profile={selectedProfile}
                 onBackPress={handleScrollToSwiper}
-              />
+              /> */}
+              <TouchableOpacity
+                style={styles.chatButton}
+                onPress={handleStartChat}
+              >
+                <Text style={styles.chatButtonText}>Start Chat</Text>
+              </TouchableOpacity>
             </View>
           </Animated.View>
         )}
@@ -286,6 +303,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     color: "#666",
+  },
+  chatButton: {
+    backgroundColor: "#007AFF",
+    padding: 15,
+    borderRadius: 25,
+    marginTop: 20,
+    marginHorizontal: 20,
+    alignItems: "center",
+  },
+  chatButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

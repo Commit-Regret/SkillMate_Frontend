@@ -41,16 +41,27 @@ const Chat = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+    // Get rooms when component mounts
     socket.emit("getRooms");
 
+    // Listen for rooms list
     socket.on("roomsList", (roomsList) => {
+      console.log("Received rooms:", roomsList);
       setRooms(roomsList);
     });
 
+    // Listen for new room created
+    socket.on("roomCreated", (room) => {
+      console.log("New room created:", room);
+      setRooms((prevRooms) => [...prevRooms, room]);
+    });
+
+    // Listen for online users
     socket.on("onlineUsers", (users) => {
       setOnlineUsers(users);
     });
 
+    // Listen for user status changes
     socket.on("userStatusChange", ({ userId, status }) => {
       setOnlineUsers((prev) =>
         prev.map((user) => (user.id === userId ? { ...user, status } : user))
@@ -59,6 +70,7 @@ const Chat = ({ navigation }) => {
 
     return () => {
       socket.off("roomsList");
+      socket.off("roomCreated");
       socket.off("onlineUsers");
       socket.off("userStatusChange");
     };

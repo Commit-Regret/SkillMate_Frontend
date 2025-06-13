@@ -29,7 +29,7 @@ export default function MessageComponent({ item, user }) {
                 : [styles.mmessage, { backgroundColor: "rgb(194, 243, 194)" }]
             }
           >
-            <Text>{item.text}</Text>
+            <Text>{item.message}</Text>
           </View>
         </View>
         <Text style={{ marginLeft: 40 }}>{item.time}</Text>
