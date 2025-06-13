@@ -10,6 +10,7 @@ import Chat from "./src/screens/Chat";
 import HomeScreen from "./src/screens/HomeScreen";
 import SwipeScreen from "./src/screens/SwipeScreen";
 import Signup from "./src/screens/Signup";
+import Flowchart from "./src/screens/Flowchart";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,11 @@ export default function App() {
             name="Home"
             component={HomeScreen}
             options={{ title: "SkillMate" }}
+          />
+          <Stack.Screen
+            name="Flowchart"
+            component={Flowchart}
+            options={{ title: "Flowchart" }}
           />
           <Stack.Screen
             name="Swipe"

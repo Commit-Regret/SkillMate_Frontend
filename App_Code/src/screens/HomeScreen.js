@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleGenerateRoadmap = () => {
-    navigation.navigate("Roadmap");
+    navigation.navigate("Flowchart");
   };
 
   const handleSuggestProjects = () => {
