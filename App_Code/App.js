@@ -9,6 +9,7 @@ import Chat from "./src/screens/Chat";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import SwipeScreen from "./src/screens/SwipeScreen";
+import Signup from "./src/screens/Signup";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,11 @@ export default function App() {
             name="Login"
             component={Login}
             options={{ title: "Login", headerShown: false }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={Signup}
+            options={{ title: "Signup", headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
