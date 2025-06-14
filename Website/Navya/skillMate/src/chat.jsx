@@ -205,7 +205,6 @@
 //   );
 // }
 
-
 // 🧠 ASSUMPTIONS:
 // - You fetch a list of previous chats from backend (like WhatsApp recent chats).
 // - When user clicks a chat, you get the `name`, use it to fetch `other_user_id`, and then establish the socket room.
@@ -227,7 +226,7 @@ export default function Chat() {
 
     socket.emit("join_chat", {
       user_id: sessionId,
-      other_user_id: "Melissa",
+      other_user_id: "Hari",
     });
 
     socket.on("joined_chat", (data) => {
