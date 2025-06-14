@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or adjust path
 import Navbar from "./navbar.jsx";
@@ -37,8 +37,36 @@ export default function UserProfileForm() {
   const [formData, setFormData] = useState({
     name: "Rahul",
     year: "1st",
-    // techstack:
+    techstack: [],
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://127.0.1.0:5000/profile/me", {
+          method: "GET",
+          headers: {
+            "X-Session-ID": localStorage.getItem("session_id"),
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setFormData(data);
+          setSelectedSkills(data.techstack || []);
+          setClickedTags(
+            skills.map((skill) => data.techstack?.includes(skill) || false)
+          );
+        } else {
+          alert("Something went wrong while fetching profile.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Error connecting to the server.");
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const [clickedTags, setClickedTags] = useState(
     Array(skills.length).fill(false)
@@ -67,7 +95,7 @@ export default function UserProfileForm() {
         : [...prev, tech]
     );
   };
-  console.log(selectedSkills);
+  // console.log(selectedSkills);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -124,8 +152,8 @@ export default function UserProfileForm() {
           alt="Profile"
           className="w-[90px] h-[90px] rounded-full object-cover"
         />
-        2030
-        <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
+        {formData.year}
+        <h2 className="text-xl font-semibold">{formData.name}</h2>
         <div className="ml-auto flex flex-col items-start gap-3">
           <button
             type="button"
@@ -151,29 +179,24 @@ export default function UserProfileForm() {
       </div>
       <form className="px-8 py-6 text-black bg-white" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-6 max-[1024px]:grid-cols-1">
-          {[
-            ["First Name", "firstName"],
-            ["Graduation Year", "graduationYear"],
-          ].map(([label, name], idx) => (
+          {Object.entries(formData).map(([name, value], idx) => (
             <div key={idx}>
-              <label className="block font-bold mb-1">{label}</label>
+              <label className="block font-bold mb-1">
+                {name.charAt(0).toUpperCase() + name.slice(1)}
+              </label>
               {name === "gender" ? (
                 <select
                   required
                   name={name}
-                  value={formData[name]}
+                  value={value}
                   onChange={handleChange}
                   className="w-full p-2 rounded bg-gray-600 text-white border border-gray-300"
-                >
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
-                </select>
+                ></select>
               ) : (
                 <input
                   required
                   name={name}
-                  value={formData[name]}
+                  value={value}
                   onChange={handleChange}
                   className="w-full p-2 rounded bg-gray-600 text-white border border-gray-300"
                 />
