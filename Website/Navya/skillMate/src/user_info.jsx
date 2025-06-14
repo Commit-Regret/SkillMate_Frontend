@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or adjust path
 import Navbar from "./navbar.jsx";
-import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+
 export default function UserProfileForm() {
+  const navigate = useNavigate(); // to programmatically navigate
   const [formData, setFormData] = useState({
     firstName: "Rahul",
     lastName: "Bhargav",
@@ -23,6 +25,7 @@ export default function UserProfileForm() {
     Array(formData.techStack.length).fill(false)
   );
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,45 +47,81 @@ export default function UserProfileForm() {
     document.getElementById("fileInput").click();
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Simple field validation
+    for (let key in formData) {
+      if (
+        typeof formData[key] === "string" &&
+        formData[key].trim() === ""
+      ) {
+        alert(`Please fill the ${key} field.`);
+        return;
+      }
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/api/profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 200) {
+        alert("Profile saved successfully!");
+        navigate("/Home"); // Navigate only if success
+      } else {
+        alert("Something went wrong while saving.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to the server.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
-
       {/* Profile Top */}
-      <div className=" min-w-screen flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
-        <img
-          src={photo}
-          alt="Profile"
-          className="w-[90px] h-[90px] rounded-full object-cover"
-        />
-        <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
-
-        <div className="ml-auto flex flex-col items-start gap-3">
-          <button
-            type="button"
-            className="bg-gray-700 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-gray-900 transition-colors"
-            onClick={handleUploadClick}
-          >
-            Upload Resume
-          </button>
-          <input
-            type="file"
-            id="fileInput"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-            accept="application/pdf"
-          />
-          {selectedFile && (
-            <p className="text-sm text-gray-700 mt-1">
-              Selected file:{" "}
-              <span className="font-semibold">{selectedFile.name}</span>
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Form */}
-      <form className="px-8 py-6 text-black bg-white">
+            <div className=" min-w-screen flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
+              <img
+                src={photo}
+                alt="Profile"
+                className="w-[90px] h-[90px] rounded-full object-cover"
+              />
+              <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
+      
+              <div className="ml-auto flex flex-col items-start gap-3">
+                <button
+                  type="button"
+                  className="bg-gray-700 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-gray-900 transition-colors"
+                  onClick={handleUploadClick}
+                >
+                  Upload Resume
+                </button>
+                <input
+                  type="file"
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                  accept="application/pdf"
+                />
+                {selectedFile && (
+                  <p className="text-sm text-gray-700 mt-1">
+                    Selected file:{" "}
+                    <span className="font-semibold">{selectedFile.name}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+      <form className="px-8 py-6 text-black bg-white" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-6 max-[1024px]:grid-cols-1">
           {[
             ["First Name", "firstName"],
@@ -100,6 +139,7 @@ export default function UserProfileForm() {
               <label className="block font-bold mb-1">{label}</label>
               {name === "gender" ? (
                 <select
+                  required
                   name={name}
                   value={formData[name]}
                   onChange={handleChange}
@@ -111,6 +151,7 @@ export default function UserProfileForm() {
                 </select>
               ) : (
                 <input
+                  required
                   name={name}
                   value={formData[name]}
                   onChange={handleChange}
@@ -140,28 +181,28 @@ export default function UserProfileForm() {
             ))}
           </div>
         </div>
-        <div className="mt-6 flex justify-between items-center">
-  <Link to="/Home">
-    <button
-      type="submit"
-      className="px-6 py-2 bg-gray-700 text-white rounded-lg"
-    >
-      Save
-    </button>
-  </Link>
-  <Link to="/">
-    <button
-      className="px-6 py-2 bg-gray-700 text-white rounded-lg"
-    >
-      Log Out
-    </button>
-  </Link>
-</div>
 
-        
+        {/* Buttons */}
+        <div className="mt-6 flex justify-between items-center">
+          <button
+            type="submit"
+            className={`px-6 py-2 rounded-lg ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-gray-700 text-white hover:bg-gray-900"
+            }`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : "Save"}
+          </button>
+
+          <Link to="/">
+            <button className="px-6 py-2 bg-gray-700 text-white rounded-lg">
+              Log Out
+            </button>
+          </Link>
+        </div>
       </form>
-  
     </>
   );
 }
-
