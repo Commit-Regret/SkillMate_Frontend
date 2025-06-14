@@ -4,40 +4,70 @@ import photo from "./photo.jpg"; // Ensure photo.jpg is in the same folder or ad
 import Navbar from "./navbar.jsx";
 import { Link } from "react-router-dom";
 
-
 export default function UserProfileForm() {
+  const [skills, setSkills] = useState([
+    "Python",
+    "Flask",
+    "MongoDB",
+    "React",
+    "Node.js",
+    "Express",
+    "Machine Learning",
+    "PyTorch",
+    "Pandas",
+    "Data Science",
+    "SQL",
+    "PowerBI",
+    "Android",
+    "Java",
+    "Firebase",
+    "iOS",
+    "Swift",
+    "Xcode",
+    "DevOps",
+    "Docker",
+    "Kubernetes",
+    "Cybersecurity",
+    "Linux",
+    "Wireshark",
+  ]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
+  // console.log(skills.length);
   const navigate = useNavigate(); // to programmatically navigate
   const [formData, setFormData] = useState({
-    firstName: "Rahul",
-    lastName: "Bhargav",
-    gender: "Female",
-    collegeId: "1234getonthedancefloor",
-    github: "1234getonthedancefloor",
-    phone: "1001001001",
-    collegeName: "Physics Wallah",
-    graduationYear: "2030",
-    state: "in your heart ;)",
-    city: "Right Atrium",
-    techStack: Array(10).fill("Python"),
+    name: "Rahul",
+    year: "1st",
+    // techstack:
   });
 
   const [clickedTags, setClickedTags] = useState(
-    Array(formData.techStack.length).fill(false)
+    Array(skills.length).fill(false)
   );
   const [selectedFile, setSelectedFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // console.log(clickedTags);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleTagClick = (index) => {
+    const tech = skills[index];
+
     setClickedTags((prev) => {
       const newClicked = [...prev];
       newClicked[index] = !newClicked[index];
       return newClicked;
     });
+
+    setSelectedSkills((prev) =>
+      prev.includes(tech)
+        ? prev.filter((skill) => skill !== tech)
+        : [...prev, tech]
+    );
   };
+  console.log(selectedSkills);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -52,10 +82,7 @@ export default function UserProfileForm() {
 
     // Simple field validation
     for (let key in formData) {
-      if (
-        typeof formData[key] === "string" &&
-        formData[key].trim() === ""
-      ) {
+      if (typeof formData[key] === "string" && formData[key].trim() === "") {
         alert(`Please fill the ${key} field.`);
         return;
       }
@@ -64,12 +91,13 @@ export default function UserProfileForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/profile", {
+      const response = await fetch("http://127.0.1.0:5000/profile/update", {
         method: "POST",
         headers: {
+          "X-Session-ID": localStorage.getItem("session_id"),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, techstack: selectedSkills }),
       });
 
       if (response.status === 200) {
@@ -90,50 +118,42 @@ export default function UserProfileForm() {
     <>
       <Navbar />
       {/* Profile Top */}
-            <div className=" min-w-screen flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
-              <img
-                src={photo}
-                alt="Profile"
-                className="w-[90px] h-[90px] rounded-full object-cover"
-              />
-              <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
-      
-              <div className="ml-auto flex flex-col items-start gap-3">
-                <button
-                  type="button"
-                  className="bg-gray-700 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-gray-900 transition-colors"
-                  onClick={handleUploadClick}
-                >
-                  Upload Resume
-                </button>
-                <input
-                  type="file"
-                  id="fileInput"
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                  accept="application/pdf"
-                />
-                {selectedFile && (
-                  <p className="text-sm text-gray-700 mt-1">
-                    Selected file:{" "}
-                    <span className="font-semibold">{selectedFile.name}</span>
-                  </p>
-                )}
-              </div>
-            </div>
+      <div className=" min-w-screen flex flex-wrap items-center gap-5 px-6 py-5 border-b border-gray-500 bg-gray-300 text-black">
+        <img
+          src={photo}
+          alt="Profile"
+          className="w-[90px] h-[90px] rounded-full object-cover"
+        />
+        2030
+        <h2 className="text-xl font-semibold">Rahul Bhargav</h2>
+        <div className="ml-auto flex flex-col items-start gap-3">
+          <button
+            type="button"
+            className="bg-gray-700 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-gray-900 transition-colors"
+            onClick={handleUploadClick}
+          >
+            Upload Resume
+          </button>
+          <input
+            type="file"
+            id="fileInput"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+            accept="application/pdf"
+          />
+          {selectedFile && (
+            <p className="text-sm text-gray-700 mt-1">
+              Selected file:{" "}
+              <span className="font-semibold">{selectedFile.name}</span>
+            </p>
+          )}
+        </div>
+      </div>
       <form className="px-8 py-6 text-black bg-white" onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-6 max-[1024px]:grid-cols-1">
           {[
             ["First Name", "firstName"],
-            ["Last Name", "lastName"],
-            ["Gender", "gender"],
-            ["College ID", "collegeId"],
-            ["Github", "github"],
-            ["Phone Number", "phone"],
-            ["College Name", "collegeName"],
             ["Graduation Year", "graduationYear"],
-            ["State", "state"],
-            ["City", "city"],
           ].map(([label, name], idx) => (
             <div key={idx}>
               <label className="block font-bold mb-1">{label}</label>
@@ -166,7 +186,7 @@ export default function UserProfileForm() {
         <div className="mt-8">
           <label className="block font-bold mb-2">Tech Stack</label>
           <div className="flex flex-wrap gap-3">
-            {formData.techStack.map((tech, index) => (
+            {skills.map((tech, index) => (
               <span
                 key={index}
                 onClick={() => handleTagClick(index)}

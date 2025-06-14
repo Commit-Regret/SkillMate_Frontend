@@ -62,7 +62,11 @@ export default function ProfileDetail() {
       {/* Main content */}
       <main className="profile-container">
         <section className="profile-main">
-          <img src={profile.image} alt={profile.name} className="profile-photo" />
+          <img
+            src={profile.image}
+            alt={profile.name}
+            className="profile-photo"
+          />
           <span className="profile-name">{profile.name}</span>
         </section>
 
@@ -75,7 +79,9 @@ export default function ProfileDetail() {
               <h2 className="tech-heading">Tech Stack</h2>
               <div className="tech-tags">
                 {profile.tech.map((t, i) => (
-                  <span className="tech-tag" key={i}>{t}</span>
+                  <span className="tech-tag" key={i}>
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>

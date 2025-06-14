@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
@@ -8,14 +7,11 @@ import profileData from "./profiles.json";
 import { AnimatePresence } from "framer-motion";
 
 export default function MainSwipe() {
-
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState(profileData);
   const [current, setCurrent] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 550);
 
-  
-  
   useEffect(() => {
     socket.connect();
 
@@ -35,11 +31,11 @@ export default function MainSwipe() {
     };
   }, [navigate]);
 
-const handleSwipe = (direction) => {
-  socket.emit("swipe", {  direction });
-  setCurrent((prev) => (prev + 1));
-};
-  
+  const handleSwipe = (direction) => {
+    socket.emit("swipe", { direction });
+    setCurrent((prev) => prev + 1);
+  };
+
   const nextCard = () => {
     if (current < profiles.length - 1) {
       setCurrent((prev) => prev + 1);
@@ -52,14 +48,11 @@ const handleSwipe = (direction) => {
     }
   };
 
-
-
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 550);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -94,16 +87,18 @@ const handleSwipe = (direction) => {
         )}
 
         {/* Active Card */}
-        <div className="relative w-[90%] max-w-[420px] h-[90%] z-10">
-          <AnimatePresence mode="wait">
-            <Card
-              key={profileData[current].id}
-              profile={profileData[current]}
-              onSwipeLeft={prevCard}
-              onSwipeRight={nextCard}
-            />
-          </AnimatePresence>
-        </div>
+        {profileData[current] && (
+          <div className="relative w-[90%] max-w-[420px] h-[90%] z-10">
+            <AnimatePresence mode="wait">
+              <Card
+                key={profileData[current].id}
+                profile={profileData[current]}
+                onSwipeLeft={prevCard}
+                onSwipeRight={nextCard}
+              />
+            </AnimatePresence>
+          </div>
+        )}
 
         {/* Navigation Buttons - only for desktop */}
         {!isMobile && current < profileData.length - 1 && (
