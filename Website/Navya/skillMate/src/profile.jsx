@@ -12,6 +12,8 @@ export default function MainSwipe() {
   const [showMatchPopup, setShowMatchPopup] = useState(false);
   const [profiles, setProfiles] = useState([]);
 
+  const [matchedProfile, setMatchedProfile] = useState();
+
   useEffect(() => {
     socket.connect();
 
@@ -19,7 +21,12 @@ export default function MainSwipe() {
       setProfiles(users);
       setCurrent(0);
     };
-
+    const onMatch = (profile) => {
+      // console.log(profile.profile.name);
+      console.log(profile);
+      // setMatchedProfile(profile);
+      setTimeout(() => navigate(`/chat/${profile.with.name}`), 2000);
+    };
     const onError = (data) => {
       console.error("Socket error:", data?.error);
       navigate("/home");
@@ -31,6 +38,7 @@ export default function MainSwipe() {
 
     socket.on("recommendations", onRecommendations);
     socket.on("error", onError);
+    socket.on("match", onMatch);
 
     return () => {
       socket.off("recommendations", onRecommendations);
@@ -41,6 +49,7 @@ export default function MainSwipe() {
 
   const handleSwipe = (direction) => {
     const currentProfile = profiles[current];
+    console.log(currentProfile);
     if (!currentProfile) return;
 
     const liked = direction === "right";
@@ -86,6 +95,7 @@ export default function MainSwipe() {
 
   const Card = ({ profile, blurred }) => {
     const { user_id, profile: profileData } = profile;
+
     const { name, year, techstack, photo_url } = profileData || {};
 
     const handleDragEnd = (event, info) => {
