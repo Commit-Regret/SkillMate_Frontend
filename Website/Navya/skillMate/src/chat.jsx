@@ -217,17 +217,18 @@ import { socket } from "./socket";
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const { chatname } = useParams(); // from /chat/:name
+  const data = useParams(); // from /chat/:name
   const sessionId = localStorage.getItem("user_id"); // ✅ fixed from useId
   const [conversationId, setConversationId] = useState(null);
 
+  // console.log(chatname);
   useEffect(() => {
     socket.connect();
-
     socket.emit("join_chat", {
       user_id: sessionId,
-      other_user_id: "Hari",
+      other_user_id: data.chatName,
     });
+    console.log(data.chatName);
 
     socket.on("joined_chat", (data) => {
       const convoId = data.conversation_id;
