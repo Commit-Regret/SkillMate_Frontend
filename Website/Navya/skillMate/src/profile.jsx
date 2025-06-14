@@ -25,7 +25,8 @@ export default function MainSwipe() {
       // console.log(profile.profile.name);
       console.log(profile);
       // setMatchedProfile(profile);
-      setTimeout(() => navigate(`/chat/${profile.with.name}`), 2000);
+      alert("MATCHED ");
+      setTimeout(() => navigate(`/chat/${profile.with.name}`), 3000);
     };
     const onError = (data) => {
       console.error("Socket error:", data?.error);
