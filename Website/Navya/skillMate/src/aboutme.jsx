@@ -30,7 +30,7 @@ const profiles = [
   },
 ];
 
-export default function ProfileDetail() {
+export default function AboutMe() {
   const { id } = useParams();
   const navigate = useNavigate();
   const index = Number.isNaN(Number(id)) ? 0 : parseInt(id, 10);
