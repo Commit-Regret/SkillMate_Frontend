@@ -10,14 +10,13 @@ const inputStyle = {
   fontSize: 14,
 };
 
-
 function SignInBox({ onClose, onAlreadyHaveAccount }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
 
@@ -35,14 +34,21 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/signin", {
+      const res = await fetch("http://127.0.1.0:5000/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
       });
+
+      const data = await res.json();
+
+      console.log(res);
 
       if (res.ok) {
         alert("Sign up successful!");
+
+        localStorage.setItem("session_id", data.session_id);
+        localStorage.setItem("user_id", data.user_id);
         navigate("/home");
       } else {
         const errJson = await res.json();
@@ -56,7 +62,8 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
   const passwordsMatch = form.password === form.confirmPassword;
 
   return (
-    <div style={{
+    <div
+      style={{
         width: 400,
         padding: 32,
         background: "black",
@@ -65,7 +72,8 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
         color: "#EFEFEF",
         position: "relative",
         margin: "40px auto",
-      }}>
+      }}
+    >
       <button
         onClick={onClose}
         style={{
@@ -80,7 +88,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
         }}
         aria-label="Close"
       ></button>
-       <h2
+      <h2
         style={{
           textAlign: "center",
           fontWeight: 900,
@@ -146,8 +154,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
           style={{
             width: "100%",
             padding: "10px",
-            background:
-              passwordsMatch && form.password ? "#C390B4" : "#888",
+            background: passwordsMatch && form.password ? "#C390B4" : "#888",
             color: "white",
             border: "none",
             borderRadius: 20,
@@ -155,8 +162,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
             fontSize: 15,
             marginBottom: 16,
             boxShadow: "0px 3px 8px rgba(0,0,0,0.24)",
-            cursor:
-            passwordsMatch && form.password ? "pointer" : "not-allowed",
+            cursor: passwordsMatch && form.password ? "pointer" : "not-allowed",
             opacity: passwordsMatch && form.password ? 1 : 0.7,
           }}
         >
@@ -189,4 +195,3 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
 }
 
 export default SignInBox;
-
