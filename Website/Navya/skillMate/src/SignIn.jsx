@@ -1,7 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+const inputStyle = {
+  width: "100%",
+  padding: "12px",
+  borderRadius: 20,
+  border: "1px solid #C0C0C0",
+  marginBottom: 16,
+  fontSize: 14,
+};
+
 
 function SignInBox({ onClose, onAlreadyHaveAccount }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -12,25 +23,40 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError(""); // Clear error on change
+    setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match!");
       return;
     }
-    // Proceed with signup logic (API call, etc.)
-    alert("Sign up successful! (Demo)");
-    // Optionally close or clear form here
+
+    try {
+      const res = await fetch("http://localhost:5000/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form)
+      });
+
+      if (res.ok) {
+        alert("Sign up successful!");
+        navigate("/home");
+      } else {
+        const errJson = await res.json();
+        setError(errJson.message || "Sign up failed. Try again.");
+      }
+    } catch (err) {
+      setError(err.message || "Sign up failed. Try again.");
+    }
   };
 
   const passwordsMatch = form.password === form.confirmPassword;
 
   return (
-    <div
-      style={{
+    <div style={{
         width: 400,
         padding: 32,
         background: "black",
@@ -39,8 +65,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
         color: "#EFEFEF",
         position: "relative",
         margin: "40px auto",
-      }}
-    >
+      }}>
       <button
         onClick={onClose}
         style={{
@@ -54,27 +79,25 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
           cursor: "pointer",
         }}
         aria-label="Close"
+      ></button>
+       <h2
+        style={{
+          textAlign: "center",
+          fontWeight: 900,
+          fontSize: 28,
+          marginBottom: 24,
+        }}
       >
-        ×
-      </button>
-      <h2 style={{ textAlign: "center", fontWeight: 900, fontSize: 28, marginBottom: 24 }}>
         Sign Up
       </h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
+          name="username"
           placeholder="Name"
-          value={form.name}
+          value={form.username}
           onChange={handleChange}
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: 20,
-            border: "1px solid #C0C0C0",
-            marginBottom: 16,
-            fontSize: 14,
-          }}
+          style={inputStyle}
           required
         />
         <input
@@ -83,14 +106,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: 20,
-            border: "1px solid #C0C0C0",
-            marginBottom: 16,
-            fontSize: 14,
-          }}
+          style={inputStyle}
           required
         />
         <input
@@ -99,14 +115,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: 20,
-            border: "1px solid #C0C0C0",
-            marginBottom: 8,
-            fontSize: 14,
-          }}
+          style={inputStyle}
           required
         />
         <input
@@ -116,12 +125,8 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
           value={form.confirmPassword}
           onChange={handleChange}
           style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: 20,
+            ...inputStyle,
             border: passwordsMatch ? "1px solid #C0C0C0" : "1px solid #FF4B4B",
-            marginBottom: 15,
-            fontSize: 14,
           }}
           required
         />
@@ -135,14 +140,14 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
             {error}
           </div>
         )}
-        <Link to='/home'>
         <button
           type="submit"
           disabled={!passwordsMatch || !form.password}
           style={{
             width: "100%",
             padding: "10px",
-            background: passwordsMatch && form.password ? "#C390B4" : "#888",
+            background:
+              passwordsMatch && form.password ? "#C390B4" : "#888",
             color: "white",
             border: "none",
             borderRadius: 20,
@@ -150,13 +155,21 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
             fontSize: 15,
             marginBottom: 16,
             boxShadow: "0px 3px 8px rgba(0,0,0,0.24)",
-            cursor: passwordsMatch && form.password ? "pointer" : "not-allowed",
+            cursor:
+            passwordsMatch && form.password ? "pointer" : "not-allowed",
             opacity: passwordsMatch && form.password ? 1 : 0.7,
           }}
         >
           Sign Up
-        </button></Link>
-        <div style={{ textAlign: "center", fontSize: 10, color: "#F5EEEE", marginBottom: 8 }}>
+        </button>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: 10,
+            color: "#F5EEEE",
+            marginBottom: 8,
+          }}
+        >
           Already have an account?{" "}
           <span
             style={{
@@ -170,40 +183,10 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
             Log in
           </span>
         </div>
-        <button
-          type="button"
-          style={{
-            width: "100%",
-            padding: "10px",
-            background: "#FFF",
-            color: "#000",
-            border: "2px solid #000",
-            borderRadius: 20,
-            marginBottom: 8,
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Sign up with Apple
-        </button>
-        <button
-          type="button"
-          style={{
-            width: "100%",
-            padding: "10px",
-            background: "#FFF",
-            color: "#000",
-            border: "2px solid #747474",
-            borderRadius: 20,
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Sign up with Google
-        </button>
       </form>
     </div>
   );
 }
 
 export default SignInBox;
+

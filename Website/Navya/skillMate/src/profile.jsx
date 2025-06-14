@@ -1,13 +1,58 @@
+
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./navbar";
 import Card from "./card";
+import { socket } from "./socket.js";
 import profileData from "./profiles.json";
-import {Link} from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
-export default function App() {
+export default function MainSwipe() {
+
+  const navigate = useNavigate();
+  const [profiles, setProfiles] = useState(profileData);
   const [current, setCurrent] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 550);
+
+  
+  
+  useEffect(() => {
+    socket.connect();
+
+    const onSessionError = () => navigate("/");
+    const onError = () => navigate("/home");
+    const onNext = (profile) => setProfiles((prev) => [...prev, profile]);
+
+    socket.on("connect_error", onError);
+    socket.on("invalid_session", onSessionError);
+    socket.on("next_profile", onNext);
+
+    return () => {
+      socket.off("connect_error", onError);
+      socket.off("invalid_session", onSessionError);
+      socket.off("next_profile", onNext);
+      socket.disconnect();
+    };
+  }, [navigate]);
+
+const handleSwipe = (direction) => {
+  socket.emit("swipe", {  direction });
+  setCurrent((prev) => (prev + 1));
+};
+  
+  const nextCard = () => {
+    if (current < profiles.length - 1) {
+      setCurrent((prev) => prev + 1);
+    }
+  };
+
+  const prevCard = () => {
+    if (current > 0) {
+      setCurrent((prev) => prev + 1);
+    }
+  };
+
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 550);
@@ -15,26 +60,18 @@ export default function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const nextCard = () => {
-    if (current < profileData.length - 1) setCurrent((prev) => prev + 1);
-  };
-
-  const prevCard = () => {
-    if (current > 0) setCurrent((prev) => prev - 1);
-  };
-
-  const handleKeyDown = (e) => {
-    if (!isMobile) {
-      if (e.key === "ArrowRight") nextCard();
-      else if (e.key === "ArrowLeft") prevCard();
-    }
-  };
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [current, isMobile]);
+    const handleKey = (e) => {
+      if (isMobile) return;
+      if (e.key === "ArrowRight") handleSwipe("right");
+      else if (e.key === "ArrowLeft") handleSwipe("left");
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isMobile]);
 
+  const currentProfile = profiles[current];
   return (
     <div className="w-screen h-screen overflow-hidden bg-gradient-to-br from-pink-200 via-purple-200 to-yellow-100">
       <Navbar />

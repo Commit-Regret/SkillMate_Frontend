@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { auth, googleProvider, signInWithPopup } from "./firebase";
 
+
+
 function LoginBox({ onClose, onSignUp }) {
   // Google Sign-In handler
   const handleGoogleSignIn = async () => {
