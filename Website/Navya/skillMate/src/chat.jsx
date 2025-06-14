@@ -218,7 +218,7 @@ import { socket } from "./socket";
 export default function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const { name } = useParams(); // from /chat/:name
+  const { chatname } = useParams(); // from /chat/:name
   const sessionId = localStorage.getItem("user_id"); // ✅ fixed from useId
   const [conversationId, setConversationId] = useState(null);
 
@@ -227,7 +227,7 @@ export default function Chat() {
 
     socket.emit("join_chat", {
       user_id: sessionId,
-      other_user_id: name,
+      other_user_id: "Melissa",
     });
 
     socket.on("joined_chat", (data) => {
