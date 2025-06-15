@@ -55,7 +55,6 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
 
   return (
     <>
-      {/* ✅ Floating Button */}
       {!isOpen && (
         <button
           onClick={toggleOpen}
@@ -65,8 +64,6 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
           <IoIosArrowDown size={14} />
         </button>
       )}
-
-      {/* ✅ Chat Box */}
       {isOpen && (
         <div className="fixed bottom-6 right-6 bg-pink-100/90 backdrop-blur-lg rounded-2xl shadow-2xl w-[420px] h-[500px] flex flex-col z-50 border border-white text-black/30">
           {/* Header */}
@@ -83,7 +80,6 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
             </button>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.map((msg, index) => (
               <div
@@ -107,7 +103,6 @@ export default function SpaciousChatBox({ isOpen, toggleOpen }) {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
           <div className="p-4 border-t border-white/30 flex gap-2">
             <input
               value={input}
