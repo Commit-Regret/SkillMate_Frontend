@@ -278,7 +278,7 @@ export default function Chat() {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") sendMessage();
   };
-
+//DONE WITH THIS SHITTTTTT
   return (
     <div className="min-h-screen min-w-screen flex flex-col bg-pink-100">
       <Navbar />
