@@ -49,7 +49,7 @@ function SignInBox({ onClose, onAlreadyHaveAccount }) {
 
         localStorage.setItem("session_id", data.session_id);
         localStorage.setItem("user_id", data.user_id);
-        navigate("/home");
+        navigate("/form");
       } else {
         const errJson = await res.json();
         setError(errJson.message || "Sign up failed. Try again.");

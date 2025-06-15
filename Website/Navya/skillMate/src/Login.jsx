@@ -188,7 +188,7 @@ function LoginBox({ onClose, onSignUp }) {
         alert("Login successful!");
         localStorage.setItem("session_id", data.session_id);
         localStorage.setItem("user_id", data.user_id);
-        navigate("/home");
+        navigate("/form");
       } else {
         setError(data.message || "Login failed. Please try again.");
       }
@@ -200,7 +200,7 @@ function LoginBox({ onClose, onSignUp }) {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      window.location.href = "/home";
+      window.location.href = "/form";
     } catch (error) {
       alert("Google sign-in failed: " + error.message);
     }
