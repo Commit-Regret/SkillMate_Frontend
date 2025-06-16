@@ -42,7 +42,6 @@ export default function ChatList({ navigation }) {
       }
 
       const data = await res.json();
-      console.log("Fetched chats:", data);
       setChats(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching chats:", error);
@@ -84,7 +83,9 @@ export default function ChatList({ navigation }) {
       />
       <FlatList
         data={filteredChats}
-        keyExtractor={(item) => item.id || item._id}
+        keyExtractor={(item, index) =>
+          (item._id || item.id || item.name || index.toString()).toString()
+        }
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.chatItem}
@@ -98,7 +99,7 @@ export default function ChatList({ navigation }) {
             <View style={styles.chatInfo}>
               <Text style={styles.chatName}>{item.name}</Text>
               <Text style={styles.chatMsg} numberOfLines={1}>
-                {item.lastMessage || "No messages yet"}
+                {item.lastMessage}
               </Text>
             </View>
             {item.unreadCount > 0 && (

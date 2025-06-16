@@ -25,23 +25,23 @@ export default function ChatScreen({ route, navigation }) {
         const userId = await AsyncStorage.getItem("user_id");
         setUserId(userId);
 
-        // Connect to socket if not already connected
         if (!socket.connected) {
           socket.connect();
         }
 
-        // Join chat room
         socket.emit("join_chat", {
           user_id: userId,
           other_user_id: chatName,
         });
 
-        // Listen for chat history
         socket.on("chat_history", (msgs) => {
-          console.log("Received chat history:", msgs);
           if (Array.isArray(msgs)) {
             const formatted = msgs.map((msg) => ({
-              id: msg.id || msg._id,
+              id: (
+                msg._id ||
+                msg.id ||
+                `${msg.sender_id}-${msg.timestamp}`
+              ).toString(),
               from: msg.sender_id === userId ? "user" : "other",
               text: msg.content,
               timestamp: msg.timestamp || new Date().toISOString(),
@@ -51,26 +51,52 @@ export default function ChatScreen({ route, navigation }) {
           setIsLoading(false);
         });
 
-        // Listen for new messages
+        // socket.on("receive_message", (data) => {
+        //   console.log("Received new message:", data);
+        //   const from = data.sender_id === userId ? "user" : "other";
+        //   setMessages((prev) => [
+        //     ...prev,
+        //     {
+        //       id: (
+        //         data._id ||
+        //         data.id ||
+        //         `${data.sender_id}-${data.timestamp}`
+        //       ).toString(),
+        //       from,
+        //       text: data.content,
+        //       timestamp: data.timestamp || new Date().toISOString(),
+        //     },
+        //   ]);
+        // });
+
         socket.on("receive_message", (data) => {
-          console.log("Received new message:", data);
-          const from = data.sender_id === userId ? "user" : "other";
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: data.id || Date.now().toString(),
-              from,
-              text: data.content,
-              timestamp: data.timestamp || new Date().toISOString(),
-            },
-          ]);
+          const messageId = (
+            data._id ||
+            data.id ||
+            `${data.sender_id}-${data.timestamp}`
+          ).toString();
+
+          setMessages((prev) => {
+            const alreadyExists = prev.some((msg) => msg.id === messageId);
+            if (alreadyExists) return prev;
+
+            const from = data.sender_id === userId ? "user" : "other";
+
+            return [
+              ...prev,
+              {
+                id: messageId,
+                from,
+                text: data.content,
+                timestamp: data.timestamp || new Date().toISOString(),
+              },
+            ];
+          });
         });
 
-        // Listen for chat room joined
         socket.on("joined_chat", (data) => {
-          console.log("Joined chat:", data);
           setConversationId(data.conversation_id);
-          // Fetch messages after joining
+
           socket.emit("fetch_messages", {
             conversation_id: data.conversation_id,
           });
@@ -100,20 +126,18 @@ export default function ChatScreen({ route, navigation }) {
       timestamp: new Date().toISOString(),
     };
 
-    console.log("Sending message:", messageData);
+    // console.log(`jaa rha msg` , messageData);
 
-    // Add message to local state immediately
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        from: "user",
-        text: newMessage.trim(),
-        timestamp: messageData.timestamp,
-      },
-    ]);
+    // setMessages((prev) => [
+    //   ...prev,
+    //   {
+    //     id: Date.now().toString(),
+    //     from: "user",
+    //     text: newMessage.trim(),
+    //     timestamp: messageData.timestamp,
+    //   },
+    // ]);
 
-    // Emit message to server
     socket.emit("send_message", messageData);
     setNewMessage("");
   };
