@@ -1,127 +1,241 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Pressable,
-  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
   FlatList,
-  Alert,
+  StyleSheet,
+  ActivityIndicator,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import Modal from "../components/Modal";
-import ChatComponent from "../components/ChatComponent";
 import socket from "../utils/socket";
-import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Chat = ({ navigation }) => {
-  const [visible, setVisible] = useState(false);
-  const [rooms, setRooms] = useState([]);
-  const [user, setUser] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+export default function ChatScreen({ route, navigation }) {
+  const { chatName } = route.params;
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [conversationId, setConversationId] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useLayoutEffect(() => {
-    const getUser = async () => {
+  useEffect(() => {
+    const setupChat = async () => {
       try {
-        const userData = await AsyncStorage.getItem("user");
-        if (userData) {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          socket.emit("joinPersonalRoom", parsedUser.id);
-        } else {
-          navigation.replace("Login");
+        const userId = await AsyncStorage.getItem("user_id");
+        setUserId(userId);
+
+        // Connect to socket if not already connected
+        if (!socket.connected) {
+          socket.connect();
         }
+
+        // Join chat room
+        socket.emit("join_chat", {
+          user_id: userId,
+          other_user_id: chatName,
+        });
+
+        // Listen for chat history
+        socket.on("chat_history", (msgs) => {
+          console.log("Received chat history:", msgs);
+          if (Array.isArray(msgs)) {
+            const formatted = msgs.map((msg) => ({
+              id: msg.id || msg._id,
+              from: msg.sender_id === userId ? "user" : "other",
+              text: msg.content,
+              timestamp: msg.timestamp || new Date().toISOString(),
+            }));
+            setMessages(formatted);
+          }
+          setIsLoading(false);
+        });
+
+        // Listen for new messages
+        socket.on("receive_message", (data) => {
+          console.log("Received new message:", data);
+          const from = data.sender_id === userId ? "user" : "other";
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: data.id || Date.now().toString(),
+              from,
+              text: data.content,
+              timestamp: data.timestamp || new Date().toISOString(),
+            },
+          ]);
+        });
+
+        // Listen for chat room joined
+        socket.on("joined_chat", (data) => {
+          console.log("Joined chat:", data);
+          setConversationId(data.conversation_id);
+          // Fetch messages after joining
+          socket.emit("fetch_messages", {
+            conversation_id: data.conversation_id,
+          });
+        });
       } catch (error) {
-        console.error("Error getting user:", error);
-        navigation.replace("Login");
+        console.error("Error setting up chat:", error);
+        setIsLoading(false);
       }
     };
 
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    socket.emit("getRooms");
-
-    socket.on("roomsList", (roomsList) => {
-      setRooms(roomsList);
-    });
-
-    socket.on("onlineUsers", (users) => {
-      setOnlineUsers(users);
-    });
-
-    socket.on("userStatusChange", ({ userId, status }) => {
-      setOnlineUsers((prev) =>
-        prev.map((user) => (user.id === userId ? { ...user, status } : user))
-      );
-    });
+    setupChat();
 
     return () => {
-      socket.off("roomsList");
-      socket.off("onlineUsers");
-      socket.off("userStatusChange");
+      socket.off("chat_history");
+      socket.off("receive_message");
+      socket.off("joined_chat");
     };
-  }, []);
+  }, [chatName]);
 
-  const handleCreateGroup = () => {
-    if (!user) {
-      Alert.alert("Error", "Please login first");
-      return;
-    }
-    setVisible(true);
+  const sendMessage = () => {
+    if (!newMessage.trim() || !conversationId || !userId) return;
+
+    const messageData = {
+      conversation_id: conversationId,
+      sender_id: userId,
+      content: newMessage.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    console.log("Sending message:", messageData);
+
+    // Add message to local state immediately
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        from: "user",
+        text: newMessage.trim(),
+        timestamp: messageData.timestamp,
+      },
+    ]);
+
+    // Emit message to server
+    socket.emit("send_message", messageData);
+    setNewMessage("");
   };
 
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem("user");
-      await AsyncStorage.removeItem("username");
-      socket.emit("logout", user?.id);
-      navigation.replace("Login");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
+  if (isLoading) {
+    return (
+      <View style={[styles.container, styles.loadingContainer]}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
-    <SafeAreaView style={styles.chatscreen}>
-      <View style={styles.chattopContainer}>
-        <View style={styles.chatheader}>
-          <Text style={styles.chatheading}>Chats</Text>
-          <View style={styles.chatheaderButtons}>
-            <Pressable onPress={handleCreateGroup}>
-              <Feather name="edit" size={24} color="green" />
-            </Pressable>
-            <Pressable onPress={handleLogout} style={{ marginLeft: 15 }}>
-              <Feather name="log-out" size={24} color="red" />
-            </Pressable>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.chatlistContainer}>
-        {rooms.length > 0 ? (
-          <FlatList
-            data={rooms}
-            renderItem={({ item }) => (
-              <ChatComponent
-                item={item}
-                onlineUsers={onlineUsers}
-                currentUser={user}
-              />
-            )}
-            keyExtractor={(item) => item.id}
-          />
-        ) : (
-          <View style={styles.chatemptyContainer}>
-            <Text style={styles.chatemptyText}>No rooms created!</Text>
-            <Text>Click the icon above to create a Chat room</Text>
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View
+            style={[
+              styles.message,
+              item.from === "user" ? styles.userMessage : styles.otherMessage,
+            ]}
+          >
+            <Text style={styles.messageText}>{item.text}</Text>
+            <Text style={styles.timestamp}>
+              {new Date(item.timestamp).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
           </View>
         )}
+        inverted={false}
+      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={newMessage}
+          onChangeText={setNewMessage}
+          placeholder="Type a message..."
+          style={styles.input}
+          multiline
+          maxLength={500}
+        />
+        <TouchableOpacity
+          onPress={sendMessage}
+          style={[
+            styles.sendButton,
+            !newMessage.trim() && styles.sendButtonDisabled,
+          ]}
+          disabled={!newMessage.trim()}
+        >
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity>
       </View>
-      {visible ? <Modal setVisible={setVisible} /> : null}
-    </SafeAreaView>
+    </View>
   );
-};
+}
 
-export default Chat;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+  loadingContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  message: {
+    padding: 12,
+    margin: 8,
+    borderRadius: 16,
+    maxWidth: "75%",
+    elevation: 1,
+  },
+  userMessage: {
+    alignSelf: "flex-end",
+    backgroundColor: "#DCF8C6",
+  },
+  otherMessage: {
+    alignSelf: "flex-start",
+    backgroundColor: "#FFFFFF",
+  },
+  messageText: {
+    fontSize: 16,
+    color: "#000000",
+  },
+  timestamp: {
+    fontSize: 12,
+    color: "#666666",
+    marginTop: 4,
+    alignSelf: "flex-end",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    padding: 10,
+    backgroundColor: "#FFFFFF",
+    borderTopWidth: 1,
+    borderTopColor: "#E0E0E0",
+  },
+  input: {
+    flex: 1,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    marginRight: 10,
+    maxHeight: 100,
+  },
+  sendButton: {
+    backgroundColor: "#128C7E",
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  sendButtonDisabled: {
+    backgroundColor: "#CCCCCC",
+  },
+  sendButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+});
